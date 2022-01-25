@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.nhlscores.model.Game
 import com.nhlscores.model.Games
 import com.nhlscores.repository.GamesRepository
+import com.nhlscores.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.joda.time.DateTime
@@ -24,6 +25,7 @@ class MyViewModel @Inject constructor(
     var dateString: MutableState<String> = mutableStateOf("")
     var dateLong: MutableState<Long> = mutableStateOf(0)
 
+    //datepicker uses these variables
     var day = mutableStateOf(12)
     var month = mutableStateOf(9)
     var year = mutableStateOf(2021)
@@ -32,7 +34,7 @@ class MyViewModel @Inject constructor(
     var maxDateString: MutableState<String> = mutableStateOf("")
     var minDateString: MutableState<String> = mutableStateOf("")
 
-    var currentGame : MutableState<Game?> = mutableStateOf(null)
+    var currentGame: MutableState<Game?> = mutableStateOf(null)
 
     init {
         initMinMaxDate()
@@ -40,13 +42,23 @@ class MyViewModel @Inject constructor(
     }
 
     fun loadGames(y: Int, m: Int, d: Int) {
-        populateDateLong(y,m,d)
+        populateDateLong(y, m, d)
         loadGames()
     }
 
     fun loadGames() {
         viewModelScope.launch {
-            games.value = repository.getGamesByDate(dateString.value)
+            var result = repository.getGamesByDate(dateString.value)
+
+            when (result) {
+                is Resource.Success -> {
+                    games.value = result.data
+                }
+
+                is Resource.Error -> {
+                    games.value = result.data
+                }
+            }
         }
     }
 
@@ -55,8 +67,7 @@ class MyViewModel @Inject constructor(
         populateDateString()
     }
 
-    private fun populateDateString()
-    {
+    private fun populateDateString() {
         dateString.value = getStringFromLong(dateLong.value)
         var date = DateTime(dateLong.value)
         year.value = date.year
@@ -64,12 +75,13 @@ class MyViewModel @Inject constructor(
         day.value = date.dayOfMonth
     }
 
-    fun changeDateByOne(flag: Boolean): Unit {
-        if(flag)
-            dateLong.value = dateLong.value + TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
-        else
-            dateLong.value = dateLong.value - TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
+    fun incDateByOne(): Unit {
+        dateLong.value = dateLong.value + TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
+        populateDateString()
+    }
 
+    fun decDateByOne() : Unit{
+        dateLong.value = dateLong.value - TimeUnit.MILLISECONDS.convert(1, TimeUnit.DAYS)
         populateDateString()
     }
 
@@ -94,6 +106,7 @@ class MyViewModel @Inject constructor(
         maxDateString.value = getStringFromYMD(2022, 5, 30)
         maxDateLong.value = getLongFromYMD(2022, 5, 30)
     }
+
     fun getFormattedDateEEEMMMdyyyy(): String {
         var sdf = SimpleDateFormat("EEE MMM d, yyyy")
         return sdf.format(dateLong.value)

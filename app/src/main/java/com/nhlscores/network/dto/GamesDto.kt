@@ -1,7 +1,6 @@
-package com.nhlscores.network
+package com.nhlscores.network.dto
 
 import com.nhlscores.model.Game
-import com.nhlscores.model.References
 
 data class GamesDto(
     val games: List<Game>,

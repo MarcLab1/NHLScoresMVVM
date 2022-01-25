@@ -44,7 +44,7 @@ fun DatePickerPage(vm: MyViewModel) {
         Row(horizontalArrangement = Arrangement.Center)
         {
             MyCustomIcon(vm.dateString.value, vm.minDateString.value, Icons.Filled.KeyboardArrowLeft, "<", {
-                vm.changeDateByOne(false)
+                vm.decDateByOne()
                 vm.loadGames()
             })
 
@@ -54,7 +54,7 @@ fun DatePickerPage(vm: MyViewModel) {
                     .clickable { datePicker.show() })
 
             MyCustomIcon(vm.dateString.value, vm.maxDateString.value, Icons.Filled.KeyboardArrowRight, ">", {
-                vm.changeDateByOne(true)
+                vm.incDateByOne()
                 vm.loadGames()
             })
         }
@@ -64,7 +64,7 @@ fun DatePickerPage(vm: MyViewModel) {
 @Composable
 fun MyCustomIcon(
     selectedDate: String,
-    thresholdDate : String,
+    thresholdDate : String, //min or max date
     icon: ImageVector,
     contentDescription: String,
     onClick: () -> Unit
@@ -73,7 +73,6 @@ fun MyCustomIcon(
         Icon(
             icon,
             contentDescription = contentDescription,
-            //tint = MaterialTheme.colors.primary,
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)
                 .clickable(enabled = false) {}
@@ -83,7 +82,6 @@ fun MyCustomIcon(
         Icon(
             icon,
             contentDescription = contentDescription,
-            //tint = MaterialTheme.colors.primary,
             modifier = Modifier
                 .padding(start = 5.dp, end = 5.dp)
                 .clickable { onClick() }

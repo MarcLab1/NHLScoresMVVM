@@ -1,4 +1,4 @@
-package com.nhlscores.model
+package com.nhlscores.network.dto
 
 data class Wind(
     val direction: Direction,

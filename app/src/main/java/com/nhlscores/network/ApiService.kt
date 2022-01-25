@@ -1,5 +1,6 @@
 package com.nhlscores.network
 
+import com.nhlscores.network.dto.GamesDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 

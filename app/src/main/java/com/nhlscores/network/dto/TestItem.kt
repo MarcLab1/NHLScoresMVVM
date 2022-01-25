@@ -1,4 +1,4 @@
-package com.nhlscores.model
+package com.nhlscores.network.dto
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

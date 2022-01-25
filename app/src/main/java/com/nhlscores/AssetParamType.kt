@@ -3,8 +3,9 @@ package com.nhlscores
 import android.os.Bundle
 import androidx.navigation.NavType
 import com.google.gson.Gson
-import com.nhlscores.model.TestItem
+import com.nhlscores.network.dto.TestItem
 
+//Not using this right now but I may later
 class AssetParamType : NavType<TestItem>(isNullableAllowed = false) {
     override fun get(bundle: Bundle, key: String): TestItem? {
         return bundle.getParcelable(key)

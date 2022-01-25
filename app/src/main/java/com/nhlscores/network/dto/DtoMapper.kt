@@ -1,4 +1,4 @@
-package com.nhlscores.network
+package com.nhlscores.network.dto
 
 import com.nhlscores.model.Games
 import com.nhlscores.model.Mapper

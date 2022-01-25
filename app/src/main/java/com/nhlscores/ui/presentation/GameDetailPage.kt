@@ -3,6 +3,7 @@ package com.nhlscores.ui.presentation
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,29 +47,76 @@ fun GameDetailPage(game: Game) {
                     shots = game.score.homeShotsTotal.toString(),
                 )
             }
-            Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally)
+
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 30.dp))
             {
-                Text("Attendance: ${game.schedule.attendance.toString()}", modifier = Modifier.padding(top = 30.dp, bottom = 10.dp))
+                Column(
+                    modifier = Modifier.fillMaxWidth(.5f),
+                    horizontalAlignment = Alignment.End
+                )
+                {
+                    for (ref in game.schedule.officials) {
+                        Text("${ref.title} : ", style = MaterialTheme.typography.h3)
+                    }
+                    Text(
+                        "Venue : ", style = MaterialTheme.typography.h3,
+                        modifier = Modifier.padding(top = 10.dp, bottom = 5.dp)
+                    )
+                    Text(
+                        "Attendance : ",
+                        style = MaterialTheme.typography.h3,
+                        modifier = Modifier.padding(bottom = 5.dp)
+                    )
+                }
+                Column(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.Start
+                )
+                {
+                    for (ref in game.schedule.officials) {
+                        Text(
+                            "${ref.firstName} ${ref.lastName}",
+                            style = MaterialTheme.typography.h3
+                        )
+                    }
+                    Text(
+                        "${game.schedule.venue.name}", style = MaterialTheme.typography.h3,
+                        modifier = Modifier.padding(top = 10.dp, bottom = 5.dp)
+                    )
+                    Text(
+                        "${game.schedule.attendance.toString()}",
+                        style = MaterialTheme.typography.h3,
+                        modifier = Modifier.padding(bottom = 5.dp)
+                    )
+                }
             }
         }
     }
 }
 
+
 @Composable
-fun CustomGameDetailColumn(modifier: Modifier, teamAbbreviation: String, imageUrl: String, goals: String, shots: String)
-{
+fun CustomGameDetailColumn(
+    modifier: Modifier,
+    teamAbbreviation: String,
+    imageUrl: String,
+    goals: String,
+    shots: String
+) {
     Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
 
         Text(
             teamAbbreviation,
             modifier = Modifier.padding(bottom = 10.dp)
         )
-       Image(
-                painter = rememberImagePainter(imageUrl),
-                "logo",
-                modifier = Modifier
-                    .size(100.dp, 100.dp)
-                    .padding(bottom = 10.dp)
+        Image(
+            painter = rememberImagePainter(imageUrl),
+            "logo",
+            modifier = Modifier
+                .size(100.dp, 100.dp)
+                .padding(bottom = 10.dp)
         )
         Text(
             goals,

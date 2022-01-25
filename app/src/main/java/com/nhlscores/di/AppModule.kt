@@ -3,7 +3,7 @@ package com.nhlscores.di
 import com.google.gson.GsonBuilder
 import com.nhlscores.network.ApiService
 import com.nhlscores.network.BasicAuthInterceptor
-import com.nhlscores.network.DtoMapper
+import com.nhlscores.network.dto.DtoMapper
 import com.nhlscores.repository.GamesRepository
 import com.nhlscores.repository.GamesRepository_Impl
 import com.nhlscores.utils.Constants
